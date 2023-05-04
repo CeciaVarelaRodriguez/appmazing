@@ -1,6 +1,7 @@
 package com.campusdual.appmazing.controller;
 
 import com.campusdual.appmazing.api.IContactService;
+import com.campusdual.appmazing.model.Contact;
 import com.campusdual.appmazing.model.dto.ContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +56,12 @@ public class ContactController {
     @PutMapping(value = "/update")
     public int updateContact(@RequestBody ContactDto contactDto){
         return contactService.updateContact(contactDto);
+    }
+
+    //Hace un update solo de aquellos campos no vacíos
+    @PutMapping(value = "/secureUpdate")
+    public int secureUpdateContact(@RequestBody ContactDto contactoDto) {
+        return contactService.secureUpdateContact(contactoDto);
     }
 
     @DeleteMapping(value = "/delete")

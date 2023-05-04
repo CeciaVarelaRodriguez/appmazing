@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("ContactService")
 @Lazy
@@ -47,4 +48,30 @@ public class ContactService implements IContactService {
         contactDao.delete(contact);
         return contact.getId();
     }
+
+    @Override
+    public int secureUpdateContact(ContactDto newContact) {
+        ContactDto oldContact = ContactMapper.INSTANCE.toDTO(contactDao.getReferenceById(newContact.getId()));
+        if (oldContact != null) {
+            if (newContact.getName() != null) {
+                oldContact.setName(newContact.getName());
+            }
+            if (newContact.getSurname1() != null) {
+                oldContact.setSurname1(newContact.getSurname1());
+            }
+            if (newContact.getSurname2() != null) {
+                oldContact.setSurname2(newContact.getSurname2());
+            }
+            if (newContact.getPhone() != null) {
+                oldContact.setPhone(newContact.getPhone());
+            }
+            if (newContact.getEmail() != null) {
+                oldContact.setEmail(newContact.getEmail());
+            }
+            return updateContact(oldContact);
+        }else{
+            return -1;
+        }
+    }
+
 }
